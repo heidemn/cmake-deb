@@ -22,10 +22,12 @@ cmake $my_cmake_opts ..
 cmake --build .
 cpack
 
-dpkg -c ./addnum-0.2.0-Linux.deb
+version=$(< ../version.txt)
+
+dpkg -c ./addnum-"$version"-Linux.deb
 
 if [ "$do_install" = 1 ]; then
-    sudo dpkg -i ./addnum-0.2.0-Linux.deb
+    sudo dpkg -i ./addnum-"$version"-Linux.deb
     ldd /usr/bin/addnumapp
 
     /usr/bin/addnumapp

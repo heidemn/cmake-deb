@@ -23,7 +23,7 @@ project (addnum VERSION ${ADDNUM_VERSION})
 
 #add_library(addnum STATIC src/add_num.cpp)
 #add_library(addnum SHARED src/add_num.cpp)
-add_library(addnum src/add_num.cpp)
+add_library(addnum src/add_num.cpp) ## Let BUILD_SHARED_LIBS decide which library type to build.
 
 set_target_properties(addnum PROPERTIES
     VERSION ${ADDNUM_VERSION}
@@ -42,11 +42,13 @@ target_link_libraries(addnumapp addnum)
 
 install(TARGETS addnumapp addnum
     #COMPONENT linapp ## defaults to "Unspecified"
+    # Don't set these, and let the OS decide.
     #RUNTIME DESTINATION "/usr/local/bin/"
     #LIBRARY DESTINATION "/usr/local/lib/"
     #DESTINATION "/usr/local/bin/"
 )
 
-SET(CPACK_GENERATOR "DEB")
+# Ubuntu: "RPM" requires "sudo apt-get install rpm"
+SET(CPACK_GENERATOR "DEB" "RPM")
 SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "KK") #required
 INCLUDE(CPack)

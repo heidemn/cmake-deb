@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set -e
 cd "$(dirname "$0")"
 
 if [ "$1" = "--clean" ]; then
@@ -18,15 +18,20 @@ fi
 mkdir -p build
 cd build
 
+echo && echo "Building..."
 cmake $my_cmake_opts ..
 cmake --build .
 cpack
 
 version=$(< ../version.txt)
 
+echo && echo "*.deb contents:"
 dpkg -c ./addnum-"$version"-Linux.deb
+echo && echo "*.rpm contents:"
+rpm -qlpv ./addnum-"$version"-Linux.rpm
 
 if [ "$do_install" = 1 ]; then
+    echo && echo "Installing..."
     sudo dpkg -i ./addnum-"$version"-Linux.deb
     ldd /usr/bin/addnumapp
 
